@@ -2,13 +2,29 @@
 #
 #                             Parts of Speech
 #
+# Contributors:
+#     Vijaykuamr Chougule, 11810050
+#     Dheeraj Koshal, 11810039
+#     Gauri Majmudar, 11810055
+#
 ####################################################################################
+
+library(udpipe)
+library(textrank)
+library(lattice)
+library(igraph)
+library(ggraph)
+library(ggplot2)
+library(stringr)
+
 
 library(shiny)
 
-# Function to clean the text
+# Handle Devanagiri script content..
+windowsFonts(devanew=windowsFont("Devanagari new normal"))
+
+# Function to clean the text data
 text.clean = function(x)
-  # text data
 {
   require("tm")
   x  =  gsub("<.*?>", " ", x)               # regex for removing HTML tags
@@ -30,7 +46,7 @@ shinyServer(function(input, output) {
     validate(need(!(is.null(input$dataFile)), "Please select a input data file (.txt)"))
     
     require(stringr)
-    fileContent <- readLines(input$dataFile$datapath)
+    fileContent <- readLines(input$dataFile$datapath,encoding="UTF-8")
     fileContent <- text.clean(fileContent)
     return(fileContent)
   })
